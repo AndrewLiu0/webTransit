@@ -3,7 +3,7 @@
 
 <head>
     <title>NYC Subway System</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <!-- <script src="dictionary.js"></script> -->
     <style>
         body {
@@ -94,9 +94,47 @@
         <option value="">-- Select Destination --</option>
         <!-- Destination options will be added dynamically -->
     </select>
-    <button id="calculateTimeButton" class="calculate-button">Calculate Time</button>
+    <button id="calculateTimeButton" onclick = "myFunction()" class="calculate-button">Calculate Time</button>
+
+    <p>Selected Origin Station: <span id="selectedOrigin"></span></p>
+    <p>Selected Destination Station: <span id="selectedDestination"></span></p>
+
 
     
+
+
+    <script>
+
+        $('#originSelect').on('change', function() {
+            selectedOriginStationID = $(this).val();
+            $('#selectedOrigin').text(selectedOriginStationID);
+        });
+
+        $('#destinationSelect').on('change', function() {
+            selectedDestinationStationID = $(this).val();
+            $('#selectedDestination').text(selectedDestinationStationID);
+        });
+
+        function myFunction() {
+        var text1= $('#text1').val();
+        var text2= $('#text2').val();
+          $.ajax({
+                      url: "/join",
+                      type: "POST",
+                      data: {text1:text1,
+                      text2:text2}
+                  }).done(function(response) {
+                    var html= "<br><br><br><p> <b> RESULT : <b><p>";
+                    response =response.result;
+                         $.each(response,function(key,val){
+                         console.log(val);
+                            html+="<p>"+val+"<p>"
+                        });
+                        html +="<br>";
+                        $(".show-data").append(html);
+                    });
+        };
+          </script>
 
 
     <script>
@@ -140,17 +178,47 @@
 
             // Replace this function with your own code to retrieve stations associated with the selected line
             function getStationsForLine(line) {
-                return Object.entries(stations[line] || {}).reduce((result, [key, value]) => {
-                    if (key.endsWith("S")) {
-                        result[key] = value;
+                var lineStations = stations[line] || {};
+                var result = {};
+
+                Object.entries(lineStations).forEach(([stopId, stationName]) => {
+                    if (stopId.endsWith("S")) {
+                        result[stationName] = stationName + " (" +stopId + ") " ;
                     }
-                    return result;
-                }, {});
+                });
+
+                return result;
             }
-                   
+
+            // var selectedOriginStation = '';
+            // var selectedDestinationStation = '';
+
+            // $('#originSelect').on('change', function() {
+            //     // Update the selected origin station variable with the new value
+            //     selectedOriginStation = $(this).val();
+            // });
+
+            // $('#destinationSelect').on('change', function() {
+            //     // Update the selected destination station variable with the new value
+            //     selectedDestinationStation = $(this).val();
+            // });
 
 
-        });
+            // var selectedOriginStationID = '';
+            // var selectedDestinationStationID = '';
+
+            // $('#originSelect').on('change', function() {
+            //     // Update the selected origin station ID variable with the new value
+            //     selectedOriginStationID = $(this).val();
+            // });
+
+            // $('#destinationSelect').on('change', function() {
+            //     // Update the selected destination station ID variable with the new value
+            //     selectedDestinationStationID = $(this).val();
+            // });
+
+
+            });
     </script>
 
 <script>
