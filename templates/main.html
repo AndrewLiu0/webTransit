@@ -111,9 +111,6 @@
     <p id = "originSelect">Selected Destination Station ID: <span id="selectedDestination"></span></p>
 
     <div style="text-align: center;">
-    <p>
-        <button id="clicked" onclick="myFunction()" style="padding: 10px 20px; background-color: #000000; color: white; border: none; cursor: pointer;">Submit</button>
-    </p>
 </div>
     <div class="show-data" >
     </div>
@@ -227,7 +224,7 @@
             data: {text1:text1,
             text2:text2}
             }).done(function(response) {
-                var html= "<br><p> <b> RESULT : <b><p>";
+                var html= "<br><p> <b> TIME <b><p>";
                 response =response.result;
                     $.each(response,function(key,val){
                     console.log(val);
