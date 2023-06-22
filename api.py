@@ -12,7 +12,7 @@ def do_something(text1,text2):
 @app.route('/')
 
 def home():
-    return render_template('home.html')
+    return render_template('main.html')
 @app.route('/join', methods=['GET','POST'])
 def my_form_post():
         # read stop_times.txt file

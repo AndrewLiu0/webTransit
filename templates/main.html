@@ -68,39 +68,57 @@
             margin-top: 5px;
         }
 
+        p{
+            font-size: 14px;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+        data: {
+            selectedOriginStationID: text1,
+            selectedDestinationStationID: text2
+        }
+
         
     </style>
 </head>
 
 <body>
+
+
     <img src = "picture.png"> 
     <h1>How Long is Your Subway Commute?</h1>
     <h3>By Andrew Liu, Eric Lin, Dylan Ma, Andrew Park</h3>
 
-    <h2>Select Subway Line:</h2>
+    <h3>Select Subway Line:</h3>
     <select id="subwayLineSelect">
         <option value="">-- Select Line --</option>
-        <!-- Add options dynamically using JavaScript -->
     </select>
-
-    <h2>Select Origin Station:</h2>
+    <h3>Select Origin Station:</h3>
     <select id="originSelect">
         <option value="">-- Select Origin --</option>
         <!-- Origin options will be added dynamically -->
     </select>
 
-    <h2>Select Destination Station:</h2>
+    <h3>Select Destination Station:</h3>
     <select id="destinationSelect">
         <option value="">-- Select Destination --</option>
         <!-- Destination options will be added dynamically -->
     </select>
     <button id="calculateTimeButton" onclick = "myFunction()" class="calculate-button">Calculate Time</button>
 
-    <p>Selected Origin Station: <span id="selectedOrigin"></span></p>
-    <p>Selected Destination Station: <span id="selectedDestination"></span></p>
+    <p id = "originSelect">Selected Origin Station ID: <span id="selectedOrigin"></span></p>
+    <p id = "originSelect">Selected Destination Station ID: <span id="selectedDestination"></span></p>
 
-
-    
+    <div style="text-align: center;">
+    <p>
+        Enter Origin Station ID:   <input type="text" id="text1" name="text1" style="padding: 10px; border: 1px solid #ccc;"><br><br>
+        Enter Destination Station ID:  <input type="text" id="text2" name="text2" style="padding: 10px; border: 1px solid #ccc;"><br><br>
+        <button id="clicked" onclick="myFunction()" style="padding: 10px 20px; background-color: #000000; color: white; border: none; cursor: pointer;">Submit</button>
+    </p>
+</div>
+    <div class="show-data" >
+    </div>
 
 
     <script>
@@ -117,27 +135,7 @@
 
           </script>
 
-    <script>
-        function myFunction() {
-        var text1= selectedOriginStationID
-        var text2= selectedDestinationStationID
-        $.ajax({
-                    url: "/join",
-                    type: "POST",
-                    data: {text1:text1,
-                    text2:text2}
-                }).done(function(response) {
-                    var html= "<br><br><br><p> <b> RESULT : <b><p>";
-                    response =response.result;
-                        $.each(response,function(key,val){
-                        console.log(val);
-                            html+="<p>"+val+"<p>"
-                        });
-                        html +="<br>";
-                        $(".show-data").append(html);
-                    });
-        };
-        </script>
+    
 
 
     <script>
@@ -207,23 +205,44 @@
             // });
 
 
-            // var selectedOriginStationID = '';
-            // var selectedDestinationStationID = '';
+            var selectedOriginStationID = '';
+            var selectedDestinationStationID = '';
 
-            // $('#originSelect').on('change', function() {
-            //     // Update the selected origin station ID variable with the new value
-            //     selectedOriginStationID = $(this).val();
-            // });
+            $('#originSelect').on('change', function() {
+                // Update the selected origin station ID variable with the new value
+                selectedOriginStationID = $(this).val();
+            });
 
-            // $('#destinationSelect').on('change', function() {
-            //     // Update the selected destination station ID variable with the new value
-            //     selectedDestinationStationID = $(this).val();
-            // });
+            $('#destinationSelect').on('change', function() {
+                // Update the selected destination station ID variable with the new value
+                selectedDestinationStationID = $(this).val();
+            });
 
 
             });
     </script>
 
+    <script>
+        function myFunction() {
+            var text1= $('#text1').val();
+            var text2= $('#text2').val();
+            $.ajax({
+            url: "/join",
+            type: "POST",
+            data: {text1:text1,
+            text2:text2}
+        }).done(function(response) {
+            var html= "<br><p> <b> RESULT : <b><p>";
+            response =response.result;
+                $.each(response,function(key,val){
+                console.log(val);
+                    html+="<p>"+val+"<p>"
+                });
+                html +="<br>";
+                $(".show-data").append(html);
+            });
+        };
+    </script>
 <script>
 var stations = {
         "1": {
