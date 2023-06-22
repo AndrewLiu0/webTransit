@@ -112,8 +112,6 @@
 
     <div style="text-align: center;">
     <p>
-        Enter Origin Station ID:   <input type="text" id="text1" name="text1" style="padding: 10px; border: 1px solid #ccc;"><br><br>
-        Enter Destination Station ID:  <input type="text" id="text2" name="text2" style="padding: 10px; border: 1px solid #ccc;"><br><br>
         <button id="clicked" onclick="myFunction()" style="padding: 10px 20px; background-color: #000000; color: white; border: none; cursor: pointer;">Submit</button>
     </p>
 </div>
@@ -220,28 +218,29 @@
 
 
             });
-    </script>
-
-    <script>
-        function myFunction() {
-            var text1= $('#text1').val();
-            var text2= $('#text2').val();
+            function myFunction() {
+            var text1= selectedOriginStationID
+            var text2= selectedDestinationStationID
             $.ajax({
             url: "/join",
             type: "POST",
             data: {text1:text1,
             text2:text2}
-        }).done(function(response) {
-            var html= "<br><p> <b> RESULT : <b><p>";
-            response =response.result;
-                $.each(response,function(key,val){
-                console.log(val);
-                    html+="<p>"+val+"<p>"
+            }).done(function(response) {
+                var html= "<br><p> <b> RESULT : <b><p>";
+                response =response.result;
+                    $.each(response,function(key,val){
+                    console.log(val);
+                        html+="<p>"+val+"<p>"
+                    });
+                    html +="<br>";
+                    $(".show-data").append(html);
                 });
-                html +="<br>";
-                $(".show-data").append(html);
-            });
-        };
+            };
+    </script>
+
+    <script>
+        
     </script>
 <script>
 var stations = {
